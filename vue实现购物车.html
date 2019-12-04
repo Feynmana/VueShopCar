@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .btnNumOper {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            line-height: 20px;
+            font-size: 14px;
+            color: #000;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: solid 1px #ccc;
+            font-size: 10px;
+        }
+
+        table img {
+            width: 100px;
+        }
+
+        td,
+        th {
+            border: solid 1px #ccc;
+            text-align: center;
+            padding: 5px;
+        }
+    </style>
+    <script src="js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <table>
+            <tr>
+                <th><input type="checkbox" @click="checkAll($event)"></th>
+                <th>书本编号</th>
+                <th>图片</th>
+                <th>书本名称</th>
+                <th>商品数量</th>
+                <th>书本价格</th>
+                <th>总价格</th>
+                <th>书本作者</th>
+                <th>删除</th>
+            </tr>
+            <tr v-for="(pro,index) in proList">
+                <td><input type="checkbox" class="checkItem" @click="selectPro(pro,$event)"></td>
+                <td>{{pro.proId}}</td>
+                <td><img :src="pro.proImg"></td>
+                <td>{{pro.proName}}</td>
+                <th><a href="javascript:;" class="btnNumOper" @click="changeNum(pro,-1)">-</a><input type="text"
+                        style="width:20px;font-size:10px;text-align: center;" readonly="readonly"
+                        v-model="pro.proNum"><a href="javascript:;" class="btnNumOper" @click="changeNum(pro,1)">+</a>
+                </th>
+                <td>{{pro.proPrice}}</td>
+                <td>{{pro.proPrice*pro.proNum}}</td>
+                <td>{{pro.Author}}</td>
+                <td><button @click="delPro(index)">删除</button></td>
+            </tr>
+            <tr>
+                <td colspan="6"></td>
+                <td>总计：</td>
+                <td>{{totlePrice}}</td>
+                <td><button>结账</button></td>
+            </tr>
+        </table>
+        </a>
+    </div>
+    <script>
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                proList: [],
+                checkDate: [],
+                totlePrice: 0
+            },
+            mounted() {
+                var _this = this;
+                axios.get("demo10.json").then(function (res) {
+                    _this.proList = res.data.proList;
+                });
+            },
+            methods: {
+                changeNum(pro, tag) {
+                    if (tag > 0) {
+                        pro.proNum++;
+                    }
+                    else {
+                        pro.proNum--;
+                        if (pro.proNum < 0) {
+                            pro.proNum = 0;
+                        }
+                    }
+                    this.calcTotalPrice();
+                },
+                selectPro(pro, e) {
+                    pro.checked = e.target.checked;
+                    this.calcTotalPrice();
+                },
+                checkAll(e) {
+                    var checkObj = document.querySelectorAll(".checkItem");
+                    for (var i = 0; i < checkObj.length; i++) {
+                        checkObj[i].checked = e.target.checked;
+                    }
+                    this.proList.forEach(function (item, index) {
+                        item.checked = e.target.checked;
+                    });
+                    this.calcTotalPrice();
+                },
+                calcTotalPrice() {
+                    var _this = this;
+                    this.totlePrice = 0;
+                    this.proList.forEach(function (item, index) {
+                        
+                        if (item.checked) {
+                            _this.totlePrice += item.proPrice * item.proNum;
+                        }
+
+                    });
+                },
+                delPro(index) {
+                    this.proList.splice(index, 1);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

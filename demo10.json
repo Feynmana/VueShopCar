@@ -1,0 +1,40 @@
+{
+    "proList": [
+        {
+            "proId": "001",
+            "proName": "红星照耀中国",
+            "proPrice": 10,
+            "Author": "张三",
+            "proImg": "img/1.jpg",
+            "proNum":0,
+            "checked":false
+        },
+        {
+            "proId": "002",
+            "proName": "半小时读懂唐诗",
+            "proPrice": 20,
+            "Author": "李四",
+            "proImg": "img/2.jpg",
+            "proNum":0,
+            "checked":false
+        },
+        {
+            "proId": "003",
+            "proName": "万版泉水都是生活",
+            "proPrice": 10,
+            "Author": "张三",
+            "proImg": "img/3.jpg",
+            "proNum":0,
+            "checked":false
+        },
+        {
+            "proId": "004",
+            "proName": "鲁迅全集",
+            "proPrice": 30,
+            "Author": "鲁迅",
+            "proImg": "img/4.jpg",
+            "proNum":0,
+            "checked":false
+        }
+    ]
+}
